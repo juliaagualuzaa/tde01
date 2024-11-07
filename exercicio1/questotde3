@@ -1,0 +1,70 @@
+#include <stdio.h>
+
+#define MAX_PRODUTOS 100
+
+
+struct Produto {
+    int id;
+    char nome[50];
+    float preco;
+};
+struct Produto* buscarProduto(struct Produto produtos[], int n, int id) {
+    for (int i = 0; i < n; i++) {
+        if (produtos[i].id == id) {
+            return &produtos[i];
+        }
+    }
+    return NULL; // Produto não encontrado
+}
+
+float calcularMediaPrecos(struct Produto produtos[], int n) {
+    float soma = 0;
+    for (int i = 0; i < n; i++) {
+        soma += produtos[i].preco;
+    }
+    return soma / n;
+}
+
+int main() {
+    struct Produto produtos[MAX_PRODUTOS];
+    int n;
+
+  
+    printf("Digite a quantidade de produtos (max %d): ", MAX_PRODUTOS);
+    scanf("%d", &n);
+
+        if (n > MAX_PRODUTOS || n <= 0) {
+        printf("Quantidade inválida!\n");
+        return 1;
+    }
+
+    for (int i = 0; i < n; i++) {
+        printf("Digite o ID do produto %d: ", i + 1);
+        scanf("%d", &produtos[i].id);
+        printf("Digite o nome do produto %d: ", i + 1);
+        scanf("%s", produtos[i].nome);
+        printf("Digite o preço do produto %d: ", i + 1);
+        scanf("%f", &produtos[i].preco);
+    }
+    int idAtualizar;
+    printf("Digite o ID do produto a ser atualizado: ");
+    scanf("%d", &idAtualizar);
+
+    struct Produto* produtoEncontrado = buscarProduto(produtos, n, idAtualizar);
+    if (produtoEncontrado) {
+        float novoPreco;
+        printf("Produto encontrado: %s (%.2f). 
+Digite o novo preço: ", produtoEncontrado->nome, produtoEncontrado->preco);
+        scanf("%f", &novoPreco);
+        produtoEncontrado->preco = novoPreco;
+        printf("Preço atualizado para: %.2f\n", produtoEncontrado->preco);
+    } else {
+        printf("Produto com ID %d não encontrado.\n", idAtualizar);
+    }
+
+       float mediaPrecos = calcularMediaPrecos(produtos, n);
+    printf("A média dos preços dos produtos é: %.2f\n", mediaPrecos);
+
+    return 0;
+}
+
